@@ -29,7 +29,7 @@ namespace ShopApiLesha.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders.Include(x => x.Client).Include(x => x.Goods).ToListAsync();
         }
 
         // GET: api/Orders/5
@@ -84,6 +84,8 @@ namespace ShopApiLesha.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(OrderDTO order)
         {
+
+            order.FinalDate = DateTime.Now;
             _context.Orders.Add(_mapper.Map<Order>(order));
             var i = await _context.SaveChangesAsync();
 

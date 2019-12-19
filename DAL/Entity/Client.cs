@@ -10,5 +10,7 @@ namespace DAL.Entity
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public string ProdName { get; set; }
+        public DateTime Date { get; set; }
     }
 }

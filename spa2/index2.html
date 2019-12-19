@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Table</title>
+</head>
+
+<body>
+    <header>
+        <h1>Furnitop</h1>
+        <h2>admin mode</h2>
+        <a href="./index.html">Add</a>
+    </header>
+    <p>Сортувати по:</p>
+    <label for="sort1" >id Замовлення</label>
+    <input id="sort1" type="radio" name="sort" checked>
+    <label for="sort2">Даті замовлення</label>
+    <input id="sort2" type="radio" name="sort">
+    <label for="sort3">Найменуванню товару</label>
+    <input id="sort3" type="radio" name="sort">
+    <label for="sort4">Імені замовника</label>
+    <input id="sort4" type="radio" name="sort">
+    <label for="sort5">Назві підприємства</label>
+    <input id="sort5" type="radio" name="sort">
+
+    
+    <table id="table">
+        <tr>
+            <th>id Замовлення</th>
+            <th>ПІБ замовника</th>
+            <th>Назва підприємства</th>
+            <th>Найменування товару</th>
+            <th>Кількість товару</th>
+            <th>Сума в грн</th>
+            <th>Дата замовлення</th>
+        </tr>
+    </table>
+    <script src="index2.js"></script>
+</body>
+
+</html>

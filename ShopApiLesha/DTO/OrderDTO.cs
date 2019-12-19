@@ -10,6 +10,7 @@ namespace ShopApiLesha.DTO
         public int ClientId { get; set; }
         public int GoodsId { get; set; }
         public float Sum { get; set; }
+        public int Amount { get; set; }
         public DateTime FinalDate { get; set; }
     }
 }

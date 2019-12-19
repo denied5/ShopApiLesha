@@ -30,7 +30,7 @@ namespace ShopApiLesha
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
             services.AddControllers();
-            services.AddDbContext<DAL.FabricContext>(x => x.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=LeshaFabric;Trusted_Connection=True", b => b.MigrationsAssembly("ShopApiLesha")));
+            services.AddDbContext<DAL.FabricContext>(x => x.UseSqlServer("Server=localhost\\MSSQLSERVER01;Database=LeshaFabric;Trusted_Connection=True", b => b.MigrationsAssembly("ShopApiLesha")));
             services.AddAutoMapper();
         }
 
