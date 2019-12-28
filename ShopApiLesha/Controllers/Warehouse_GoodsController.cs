@@ -48,7 +48,7 @@ namespace ShopApiLesha.Controllers
         [HttpPost("{warehouseId}/goods/{goodsId}")]
         public async Task<ActionResult<Warehouse_Goods>> PostWarehouse_Goods(int warehouseId, int goodsId)
         {
-            Warehouse_Goods wg = new Warehouse_Goods() { GoodsId = goodsId, WarhouseId = warehouseId };
+            Warehouse_Goods wg = new Warehouse_Goods() { GoodsId = goodsId, WarehouseId = warehouseId };
             _context.Warehouse_Goods.Add(wg);
 
             var i = await _context.SaveChangesAsync();

@@ -26,9 +26,6 @@ namespace ShopApiLesha.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -56,6 +53,9 @@ namespace ShopApiLesha.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
@@ -77,11 +77,14 @@ namespace ShopApiLesha.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("FinalDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("GoodsId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<float>("Sum")
                         .HasColumnType("real");
@@ -118,13 +121,13 @@ namespace ShopApiLesha.Migrations
                     b.Property<int>("GoodsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("WarhouseId")
+                    b.Property<int>("WarehouseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WarehouseId")
+                    b.Property<int>("Quatity")
                         .HasColumnType("int");
 
-                    b.HasKey("GoodsId", "WarhouseId");
+                    b.HasKey("GoodsId", "WarehouseId");
 
                     b.HasIndex("WarehouseId");
 
@@ -157,7 +160,8 @@ namespace ShopApiLesha.Migrations
                     b.HasOne("DAL.Entity.Warehouse", "Warehouse")
                         .WithMany("Goods")
                         .HasForeignKey("WarehouseId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

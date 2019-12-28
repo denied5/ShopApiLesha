@@ -23,6 +23,11 @@ td {
     background: #F5D7BF;
     padding: 10px;
 }
+
+tr {
+    border-bottom: 1px solid #000;
+}
+
 header {
     background-color: rgb(154, 240, 247);
     border-radius: 5px;
@@ -53,4 +58,8 @@ header a {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     height: 70vh;
 
+}
+
+#block1 {
+    margin-left: 75px;
 }

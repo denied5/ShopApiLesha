@@ -13,6 +13,7 @@ namespace DAL.Entity
         public Goods Goods { get; set; }
         public float Sum { get; set; }
         public int Amount { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime OrderDate { get; set; }
+        public DateTime FinalDate { get; set; }
     }
 }

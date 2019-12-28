@@ -9,7 +9,6 @@ namespace ShopApiLesha.DTO
     {
         public string Name { get; set; }
         public string ProdName { get; set; }
-        public DateTime Date { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
     }

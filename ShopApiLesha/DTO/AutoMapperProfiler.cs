@@ -14,7 +14,7 @@ namespace ShopApiLesha.DTO
             CreateMap<ClientsDTO, Client>().ReverseMap();
             CreateMap<GoodsDTO, Goods>().ReverseMap();
             CreateMap<OrderDTO, Order>().ReverseMap();
-            CreateMap<WarehouseDTO, Warehouse>().ReverseMap();
+            CreateMap<Warehouse, WarehouseDTO>().ReverseMap();
             CreateMap<Warehouse_GoodsDTO, Warehouse_Goods>().ReverseMap();
         }
     }

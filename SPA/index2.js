@@ -1,11 +1,9 @@
 window.onload = function () {
-    getData('http://localhost:5000/api/Orders/').then((elements) => {
-        localStorage.setItem('Orders', elements);
-    });
     let orders = JSON.parse(localStorage.getItem('Orders'));
     orders.forEach((elem) => {
         createRow(elem);
     });
+
 }
 
 async function getData(url) {
@@ -20,19 +18,27 @@ function createCell(row, value) {
     row.appendChild(t);
 }
 
-
 function createRow(obj) {
-    const table = document.getElementById("table").getElementsByTagName("tbody")[0];
-    let row = document.createElement("tr");
-    createCell(row, obj.id);
-    createCell(row, obj.client.name);
-    createCell(row, obj.client.prodName);
-    createCell(row, obj.goods.name);
-    createCell(row, obj.amount);
-    createCell(row, obj.sum);
-    createCell(row, obj.date);
+    console.log(obj.finalDate);
+    if (obj.finalDate != "0001-01-01T00:00:00") {
+        const table = document.getElementById("table").getElementsByTagName("tbody")[0];
+        let row = document.createElement("tr");
+        let date = new Date(obj.finalDate);
+        
+        date = "" + date.getDate() + "." + (date.getMonth() + 1) + "." + date.getUTCFullYear();
+        let date1 = new Date(obj.orderDate);
+        date1 = "" + date1.getDate() + "." + (date1.getMonth() + 1) + "." + date1.getUTCFullYear();
+        createCell(row, obj.id);
+        createCell(row, obj.client.name);
+        createCell(row, obj.client.prodName);
+        createCell(row, obj.goods.name);
+        createCell(row, obj.amount);
+        createCell(row, obj.sum);
+        createCell(row, date1);
+        createCell(row, date);
 
-    table.appendChild(row);
+        table.appendChild(row);
+    }
 }
 
 function sortTableById() {
@@ -190,6 +196,12 @@ let searchSubmit = document.getElementById("search-submit");
 searchSubmit.onclick = function () {
     let expression = new RegExp(search.value);
     let orders = JSON.parse(localStorage.getItem('Orders'));
+    const table = document.getElementsByTagName("tr");
+    let counter = table.length - 1;
+    while (table.length > 1) {
+        table[counter].remove();
+        counter--;
+    }
     orders.forEach((elem) => {
         if (isFound(elem, expression)) {
             createRow(elem);
@@ -198,17 +210,50 @@ searchSubmit.onclick = function () {
 }
 
 function isFound(obj, expression) {
-    for(i in obj){
-        if(typeof obj[i] == 'object'){
-            for(j in obj[i]){
-                if(expression.test(obj[i][j])){
+    for (i in obj) {
+        if (typeof obj[i] == 'object') {
+            for (j in obj[i]) {
+                if (expression.test(obj[i][j])) {
                     return true;
                 }
             }
         }
-        if(expression.test(obj[i])){
+        if (expression.test(obj[i])) {
             return true;
         }
     }
     return false;
+}
+
+document.getElementById("ok").onclick = function () {
+    let select = document.getElementById("month");
+    const table = document.getElementsByTagName("tr");
+    let counter = table.length - 1;
+    while (table.length > 1) {
+        table[counter].remove();
+        counter--;
+    }
+    let orders = JSON.parse(localStorage.getItem('Orders'));
+
+    if (select.value != "A") {
+        orders.forEach((elem) => {
+            if (select.value == 'first' && new Date(elem.orderDate).getMonth() < 3) {
+                createRow(elem);
+            }
+            else if (select.value == 'second' && new Date(elem.orderDate).getMonth() >= 3 && new Date(elem.orderDate).getMonth() < 6) {
+                createRow(elem);
+            }
+            else if (select.value == 'third' && new Date(elem.orderDate).getMonth() >= 6 && new Date(elem.orderDate).getMonth() < 9) {
+                createRow(elem);
+            } 
+            else if (select.value == 'fourth' && new Date(elem.orderDate).getMonth() >= 9 ) {
+                createRow(elem);
+            } 
+        });
+    }
+    else {
+        orders.forEach((elem) => {
+            createRow(elem);
+        });
+    }
 }

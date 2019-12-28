@@ -9,6 +9,7 @@ using DAL;
 using DAL.Entity;
 using AutoMapper;
 using ShopApiLesha.DTO;
+using Newtonsoft.Json;
 
 namespace ShopApiLesha.Controllers
 {
@@ -27,9 +28,19 @@ namespace ShopApiLesha.Controllers
 
         // GET: api/Warehouses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Warehouse>>> GetWarehouses()
+        public async Task<IActionResult> GetWarehouses()
         {
-            return await _context.Warehouses.ToListAsync();
+            var j = _context.Warehouses.Include(x => x.Goods).ThenInclude(y => y.Goods).AsEnumerable();
+            var settings = new JsonSerializerSettings
+            {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    Formatting = Formatting.Indented
+            };
+
+            string json = JsonConvert.SerializeObject(j, settings);
+
+
+            return  Ok(json);
         }
 
         // GET: api/Warehouses/5

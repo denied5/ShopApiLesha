@@ -21,7 +21,7 @@ namespace DAL
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Warehouse_Goods>()
-                .HasKey(k => new { k.GoodsId, k.WarhouseId });
+                .HasKey(k => new { k.GoodsId, k.WarehouseId });
 
             modelBuilder.Entity<Warehouse_Goods>()
                 .HasOne(w => w.Warehouse)

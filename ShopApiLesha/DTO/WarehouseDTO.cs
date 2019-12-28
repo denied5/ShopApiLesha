@@ -7,6 +7,7 @@ namespace ShopApiLesha.DTO
 {
     public class WarehouseDTO
     {
+        public int id { get; set; }
         public string Name { get; set; }
         public string Adress { get; set; }
     }

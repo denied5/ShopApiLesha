@@ -27,9 +27,21 @@ namespace ShopApiLesha.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrders()
         {
-            return await _context.Orders.Include(x => x.Client).Include(x => x.Goods).ToListAsync();
+            var ordersFromDTO =  _context.Orders.Include(x => x.Client).Include(x => x.Goods).ToList();
+            var werhoses = _context.Warehouses.Include(x => x.Goods).ThenInclude(x => x.Goods).ToList();
+
+            var orders = _mapper.Map<IEnumerable<OrderDTO>>(ordersFromDTO).ToList();
+
+            for (int i = 0; i < orders.Count(); i++)
+            {
+                orders[i].Warehouses =
+                    _mapper.Map<IEnumerable<WarehouseDTO>>(werhoses.Where(w => w.Goods.Select(g => g.Goods).Contains(ordersFromDTO[i].Goods)));
+                    
+            }
+
+            return orders;
         }
 
         // GET: api/Orders/5
@@ -49,33 +61,28 @@ namespace ShopApiLesha.Controllers
         // PUT: api/Orders/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder(int id, Order order)
+        [HttpPut("{id}/{warehouseId}")]
+        public async Task<IActionResult> PutOrder(int id, int warehouseId)
         {
-            if (id != order.Id)
+            var order = await _context.Orders.Include(x => x.Goods).FirstOrDefaultAsync(x => x.Id == id);
+            if (order == null)
             {
                 return BadRequest();
             }
 
-            _context.Entry(order).State = EntityState.Modified;
-
-            try
+            
+            var warehouseGoods = await _context.Warehouse_Goods.FirstOrDefaultAsync(x => x.GoodsId == order.GoodsId && x.WarehouseId == warehouseId);
+            if (warehouseGoods.Quatity < order.Amount)
             {
-                await _context.SaveChangesAsync();
+                return BadRequest("Na sklade stol'ko netu");
             }
-            catch (DbUpdateConcurrencyException)
+            warehouseGoods.Quatity = warehouseGoods.Quatity - order.Amount;
+            order.FinalDate = DateTime.Now;
+            if (await _context.SaveChangesAsync() > 0)
             {
-                if (!OrderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NoContent();
             }
-
-            return NoContent();
+            return BadRequest();
         }
 
         // POST: api/Orders
@@ -84,8 +91,7 @@ namespace ShopApiLesha.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(OrderDTO order)
         {
-
-            order.FinalDate = DateTime.Now;
+            order.OrderDate = DateTime.Now;
             _context.Orders.Add(_mapper.Map<Order>(order));
             var i = await _context.SaveChangesAsync();
 

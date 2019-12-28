@@ -45,23 +45,23 @@ function ClientGetDataInLocalStorage() {
 }
 
 function GoodsGetDataInLocalStorage() {
-    let json = getData('http://localhost:5000/api/Goods/').then((elements) => {
-        localStorage.setItem('Goods', elements);
+    let json = getData('http://localhost:5000/api/Orders/').then((elements) => {
+        localStorage.setItem('Orders', elements);
     });
-    let elements = JSON.parse(localStorage.getItem('Goods'));
-    let select = this.document.getElementById("goods");
-    let options = select.children;
-    let counter = options.length - 1;
-    while (options.length) {
-        options[counter].remove();
-        counter--;
-    }
-    elements.forEach(el => {
-        let option = document.createElement("option");
-        option.value = el.name;
-        option.innerHTML = el.name;
-        select.appendChild(option);
-    });
+    // let elements = JSON.parse(localStorage.getItem('Goods'));
+    // let select = document.getElementById("goods");
+    // let options = select.children;
+    // let counter = options.length - 1;
+    // while (options.length) {
+    //     options[counter].remove();
+    //     counter--;
+    // }
+    // elements.forEach(el => {
+    //     let option = document.createElement("option");
+    //     option.value = el.name;
+    //     option.innerHTML = el.name;
+    //     select.appendChild(option);
+    // });
 }
 
 window.onload = function () {
@@ -83,11 +83,11 @@ form.onclick = function () {
     postData('http://localhost:5000/api/Clients/', obj)
         .then(data => {
             ClientGetDataInLocalStorage();
-            console.log(JSON.stringify(data))
+            console.log(JSON.stringify(data));
         }) // JSON-строка полученная после вызова `response.json()`
         .catch(error => {
             ClientGetDataInLocalStorage();
-            console.error(error)
+            console.error(error);
         });
     name.value = '';
     prodName.value = '';
@@ -111,14 +111,12 @@ form2.onclick = function () {
     let amount = document.getElementById("amount");
     obj.Amount = +amount.value;
     obj.Sum = Number(amount.value) * priceList[goodsList.indexOf(goodsName)];
-    obj.FinalDate = new Date().now;
     postData('http://localhost:5000/api/Orders/', obj)
         .then(data => {
             console.log(JSON.stringify(data));
             GoodsGetDataInLocalStorage();
         }) // JSON-строка полученная после вызова `response.json()`
         .catch(error => {
-            console.error(error);
             GoodsGetDataInLocalStorage();
         });
     document.getElementById("amount").value = 500;
@@ -134,6 +132,6 @@ async function getData(url) {
 let amount = document.getElementById("amount");
 let price = document.getElementById("price");
 let goods = document.getElementById("goods");
-amount.onchange = function sumDisplay(){
+amount.oninput = function sumDisplay(){
     price.value = +amount.value * priceList[goodsList.indexOf(goods.value)];
 }
